@@ -12,12 +12,19 @@ body {
     background-color: blanchedalmond;
 }
 
+#instructionDisplay {
+    font-size: 8cqw;
+    margin: 1rem;
+}
+
 #timer {
-    font-size: 10cqw;
+    display: inline-block;
+    font-size: 5cqw;
     margin: 1rem;
 }
 
 #countdown {
+    display: inline-block;
     font-size: 5cqw;
     margin: 1rem;
 }

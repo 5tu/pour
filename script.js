@@ -1,14 +1,15 @@
 window.onload = function () {
     const timerElement = document.getElementById('timer');
     const infoElement = document.getElementById('info');
+    const instructionDisplay = document.getElementById('instructionDisplay'); // New element for displaying instructions
     const startResetButton = document.getElementById('startResetButton');
 
     const presetTimes = [
-        { time: 0, scale: "000g", add: "100g", finished: "no" },
-        { time: 45, scale: "100g", add: "140g", finished: "no" },
-        { time: 90, scale: "240g", add: "120g", finished: "no" },
-        { time: 135, scale: "360g", add: "120g", finished: "no" },
-        { time: 180, scale: "480g", add: "120g", finished: "no" },
+        { time: 0, scale: "000g", add: "100g", duration: "10", instruction: "Pour 100g of water", finished: "no" },
+        { time: 45, scale: "100g", add: "140g", duration: "10", instruction: "Pour 140g of water", finished: "no" },
+        { time: 90, scale: "240g", add: "120g", duration: "10", instruction: "Pour 120g of water", finished: "no" },
+        { time: 135, scale: "360g", add: "120g", duration: "10", instruction: "Pour 120g of water", finished: "no" },
+        { time: 180, scale: "480g", add: "120g", duration: "10", instruction: "Pour 120g of water", finished: "no" },
         { time: 210, scale: "600g", add: "000g", finished: "yes" }
     ];
 
@@ -80,12 +81,23 @@ window.onload = function () {
         }
     }
 
+    function updateInstruction(elapsedSeconds) {
+        const currentStepIndex = presetTimes.findIndex(step => elapsedSeconds >= step.time && elapsedSeconds < step.time + step.duration);
+        if (currentStepIndex !== -1) {
+            const currentStep = presetTimes[currentStepIndex];
+            instructionDisplay.textContent = currentStep.instruction;
+            setTimeout(() => {
+                instructionDisplay.textContent = "Wait";
+            }, currentStep.duration * 1000);
+        }
+    }
 
     function updateTimers() {
         const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         timerElement.textContent = formatTime(elapsedTime);
         updateHighlight(elapsedTime);
         updateCountdown(elapsedTime);
+        updateInstruction(elapsedTime);
     }
 
     function startTimer() {
