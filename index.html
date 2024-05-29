@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer Display</title>
+    <style>
+        @import url(https://fonts.bunny.net/css?family=xanh-mono:400,400i);
+
+        @import url(https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css);
+
+        @container (min-width: 320px) and (max-width: 4096px);
+
+        body {
+            font-family: 'Xanh Mono', monospace;
+            text-align: center;
+            font-size: 2em;
+            font-weight: 400;
+            background-color: blanchedalmond;
+        }
+
+        #timer {
+            font-size: 10cqw;
+            margin: 1rem;
+        }
+
+        #controls {
+            margin: 1rem;
+        }
+
+        #info {
+            font-size: 5cqw;
+            color: seagreen;
+        }
+
+        button {
+            font-family: 'Xanh Mono', monospace;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 5cqw;
+            padding: 1rem 3rem;
+            margin: 1rem;
+            background-color: blanchedalmond;
+            border-radius: 0.5rem;
+            border-style: dashed;
+        }
+
+        button:hover {
+            background-color: darkseagreen;
+        }
+
+        .highlight {
+            display: block;
+            background-color: darkseagreen;
+            color: black;
+            margin: 5rem;
+            transform: scale(1);
+	animation: pulse 1200ms infinite;
+        }
+
+        .preset-item {
+            margin: 0.5em 0;
+        }
+
+        #headline {
+            font-size: 5cqw;
+            background-color: darkseagreen;
+            color: black;
+            padding: 1rem;
+            margin: 0;
+        }
+
+        #subtitle {
+            font-size: 3cqw;
+            background-color: darkseagreen;
+            color: black;
+            padding-bottom: 1rem;
+            margin: 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(143, 188, 143, 1);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 1rem rgba(51, 217, 178, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="headline">Tetsu Kasuya Advanced 4:6 V60</div>
+    <div id="subtitle">40g coffee, medium coarse grind</div>
+
+    <div id="timer">00:00:00</div>
+
+    <div id="controls"><button id="startResetButton">Start</button></div>
+
+    <div id="info"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
