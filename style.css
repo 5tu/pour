@@ -12,7 +12,7 @@ body {
     background-color: blanchedalmond;
 }
 
-#instructionDisplay {
+#instruction {
     font-size: 8cqw;
     margin: 1rem;
 }
@@ -61,7 +61,7 @@ button:hover {
     background: linear-gradient(to right, darkseagreen 50%, transparent 0);
     background-size: 200% 100%;
     background-position: right;
-    animation: fillbg 10s linear forwards;
+    animation: fillbg 9s linear forwards;
 
 }
 
