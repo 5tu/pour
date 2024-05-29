@@ -23,6 +23,24 @@ window.onload = function () {
         return `${h}:${m}:${s}`;
     }
 
+    function updateCountdown(elapsedSeconds) {
+        let nextStepIndex = -1;
+
+        // Find the index of the next step
+        for (let i = 0; i < presetTimes.length; i++) {
+            if (elapsedSeconds < presetTimes[i].time) {
+                nextStepIndex = i;
+                break;
+            }
+        }
+
+        // Calculate time remaining until the next step
+        let timeRemaining = presetTimes[nextStepIndex].time - elapsedSeconds;
+
+        // Update the countdown timer UI
+        document.getElementById('countdown').textContent = "Next step in: " + formatTime(timeRemaining);
+    }
+
     function renderInfo() {
         infoElement.innerHTML = '';
         presetTimes.forEach((item, index) => {
@@ -45,37 +63,42 @@ window.onload = function () {
 
         presetTimes.forEach((item, index) => {
             const div = document.getElementById(`preset-${index}`);
-            if (index === currentHighlightIndex) {
+            if (index === currentHighlightIndex && index !== presetTimes.length - 1) {
                 div.classList.add('highlight');
-                if (item.finished === "yes") {
-                    clearInterval(intervalId);
-                    div.textContent = "Finished";
-                    isRunning = false;
-                    startResetButton.textContent = 'Start';
-                }
             } else {
                 div.classList.remove('highlight');
-                div.textContent = `${formatTime(item.time)} → Scale ${item.scale} → Pour ${item.add}`;
             }
         });
+
+        // Check if the last entry is reached
+        if (currentHighlightIndex === presetTimes.length - 1) {
+            timerElement.textContent = "Finished";
+            document.getElementById('countdown').textContent = "Enjoy your coffee!";
+            clearInterval(intervalId);
+            isRunning = false;
+            startResetButton.textContent = 'Start';
+        }
     }
 
-    function updateTimer() {
+
+    function updateTimers() {
         const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         timerElement.textContent = formatTime(elapsedTime);
         updateHighlight(elapsedTime);
+        updateCountdown(elapsedTime);
     }
 
     function startTimer() {
         startTime = Date.now();
-        intervalId = setInterval(updateTimer, 1000);
+        intervalId = setInterval(updateTimers, 1000);
         startResetButton.textContent = 'Reset';
         isRunning = true;
     }
 
     function resetTimer() {
         clearInterval(intervalId);
-        timerElement.textContent = '00:00:00';
+        timerElement.textContent = "Elapsed time";
+        document.getElementById('countdown').textContent = "Time until next step"; // Reset countdown timer
         presetTimes.forEach((item, index) => {
             const div = document.getElementById(`preset-${index}`);
             div.classList.remove('highlight');
