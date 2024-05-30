@@ -17,6 +17,12 @@ body {
     margin: 1rem;
 }
 
+#instruction2 {
+    display: inline-block;
+    font-size: 5cqw;
+    margin: 1rem;
+}
+
 #timer {
     display: inline-block;
     font-size: 5cqw;
@@ -35,7 +41,7 @@ body {
 
 #info {
     font-size: 5cqw;
-    color: seagreen;
+    color: #B2A48F;
 }
 
 button {
@@ -61,7 +67,7 @@ button:hover {
     background: linear-gradient(to right, darkseagreen 50%, transparent 0);
     background-size: 200% 100%;
     background-position: right;
-    animation: fillbg 9s linear forwards;
+    animation: fillbg 10s linear forwards;
 
 }
 
@@ -105,7 +111,10 @@ button:hover {
 }
 
 @keyframes fillbg {
-    100% {
+    99% {
         background-position: left;
+    }
+    100% {
+        background-position: right;
     }
 }

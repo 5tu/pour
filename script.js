@@ -2,6 +2,7 @@ window.onload = function () {
     const timerElement = document.getElementById('timer');
     const countdownElement = document.getElementById('countdown');
     const instructionElement = document.getElementById('instruction');
+    const instruction2Element = document.getElementById('instruction2');
     const infoElement = document.getElementById('info');
     const startResetButton = document.getElementById('startResetButton');
 
@@ -17,6 +18,7 @@ window.onload = function () {
     let intervalId;
     let startTime;
     let isRunning = false;
+    let isCountingDown = false;
     let currentInstructionTimeout;
     let countdownTimeouts = [];
     let resetButtonEnabled = false;
@@ -40,7 +42,7 @@ window.onload = function () {
 
         if (nextStepIndex !== -1) {
             let timeRemaining = presetTimes[nextStepIndex].time - elapsedSeconds;
-            countdownElement.textContent = "Next step in: " + formatTime(timeRemaining);
+            countdownElement.textContent = "Next step: " + formatTime(timeRemaining);
         }
     }
 
@@ -79,7 +81,6 @@ window.onload = function () {
             clearInterval(intervalId);
             isRunning = false;
             startResetButton.textContent = 'Start';
-            startResetButton.disabled = false;
         }
     }
 
@@ -87,19 +88,30 @@ window.onload = function () {
         if (currentInstructionTimeout) {
             clearTimeout(currentInstructionTimeout);
         }
-
+    
         const currentStepIndex = presetTimes.findIndex(step => elapsedSeconds >= step.time && elapsedSeconds < step.time + step.duration);
-
+        const nextStepIndex = presetTimes.findIndex(step => elapsedSeconds < step.time);
+    
         if (currentStepIndex !== -1) {
             const currentStep = presetTimes[currentStepIndex];
             instructionElement.textContent = currentStep.instruction;
-
+    
             currentInstructionTimeout = setTimeout(() => {
                 instructionElement.textContent = "Wait";
             }, currentStep.duration * 1000);
+        } else if (nextStepIndex !== -1 && (presetTimes[nextStepIndex].time - elapsedSeconds) <= 5) {
+            instructionElement.textContent = "Get ready";
         } else {
             instructionElement.textContent = "Wait";
         }
+    
+        let runningTotal = 0;
+        presetTimes.forEach((step, index) => {
+            if (elapsedSeconds >= step.time) {
+                runningTotal += parseInt(step.add);
+            }
+        });
+        instruction2Element.textContent = `Scale: ${runningTotal}g`;
     }
 
     function updateTimers() {
@@ -109,11 +121,9 @@ window.onload = function () {
         updateCountdown(elapsedTime);
         updateInstruction(elapsedTime);
 
-        // Enable the button 250ms after starting the main timer
         if (!resetButtonEnabled && Date.now() - startTime >= 250) {
-            startResetButton.disabled = false;
-            startResetButton.textContent = 'Reset';
             resetButtonEnabled = true;
+            startResetButton.textContent = 'Reset';
         }
     }
 
@@ -126,8 +136,8 @@ window.onload = function () {
     function startCountdown() {
         let countdown = 5;
         instructionElement.textContent = countdown;
-        startResetButton.disabled = true;
-        resetButtonEnabled = false;
+        isCountingDown = true;
+        startResetButton.textContent = 'Stop';
 
         for (let i = 0; i <= 5; i++) {
             countdownTimeouts.push(setTimeout(() => {
@@ -136,13 +146,13 @@ window.onload = function () {
                     countdown--;
                 } else {
                     startMainTimer();
+                    isCountingDown = false;
                 }
             }, i * 1000));
         }
     }
 
     function startTimer() {
-        instructionElement.textContent = "Get ready!";
         startCountdown();
     }
 
@@ -151,21 +161,23 @@ window.onload = function () {
         clearTimeout(currentInstructionTimeout);
         countdownTimeouts.forEach(timeout => clearTimeout(timeout));
         countdownTimeouts = [];
-        timerElement.textContent = "Elapsed time";
-        countdownElement.textContent = "Time until next step";
+        timerElement.textContent = "[Elapsed]";
+        countdownElement.textContent = "[Next step]";
         instructionElement.textContent = "Press 'Start' to begin";
+        instruction2Element.textContent = "[Scale]";
         presetTimes.forEach((item, index) => {
             const div = document.getElementById(`preset-${index}`);
             div.classList.remove('highlight');
             div.textContent = `${formatTime(item.time)} → Scale ${item.scale} → Pour ${item.add}`;
         });
         startResetButton.textContent = 'Start';
-        startResetButton.disabled = false;
+        resetButtonEnabled = false;
         isRunning = false;
+        isCountingDown = false;
     }
 
     startResetButton.addEventListener('click', () => {
-        if (isRunning) {
+        if (isRunning || isCountingDown) {
             resetTimer();
         } else {
             startTimer();
