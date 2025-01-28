@@ -8,25 +8,25 @@ window.onload = function () {
     const dropdownContainer = document.getElementById('dropdown-container'); // New container for the dropdown
 
     const recipes = {
-        "40g for 600g": [
+        "40g/600g Sweeter": [
             { time: 0, scale: "0g", add: "100g", duration: 10, instruction: "Pour 100g water" },
             { time: 45, scale: "100g", add: "140g", duration: 10, instruction: "Pour 140g water" },
             { time: 90, scale: "240g", add: "120g", duration: 10, instruction: "Pour 120g water" },
-            { time: 135, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g water" },
-            { time: 180, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g water" },
+            { time: 130, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g water" },
+            { time: 160, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g water" },
             { time: 210, scale: "600g", add: "0g", duration: 0, instruction: "Remove V60" }
         ],
-        "20g for 300g": [
+        "20g/300g Sweeter": [
             { time: 0, scale: "0g", add: "50g", duration: 10, instruction: "Pour 50g water" },
             { time: 45, scale: "50g", add: "70g", duration: 10, instruction: "Pour 70g water" },
             { time: 90, scale: "126g", add: "60g", duration: 10, instruction: "Pour 60g water" },
-            { time: 135, scale: "180g", add: "60g", duration: 10, instruction: "Pour 60g water" },
-            { time: 180, scale: "240g", add: "60g", duration: 10, instruction: "Pour 60g water" },
+            { time: 130, scale: "180g", add: "60g", duration: 10, instruction: "Pour 60g water" },
+            { time: 160, scale: "240g", add: "60g", duration: 10, instruction: "Pour 60g water" },
             { time: 210, scale: "300g", add: "0g", duration: 0, instruction: "Remove V60" }
         ],
     };
 
-    let currentRecipe = "40g for 600g";
+    let currentRecipe = "40g/600g Sweeter";
     let presetTimes = recipes[currentRecipe];
 
     let intervalId;
@@ -120,11 +120,9 @@ window.onload = function () {
     
             // Update the UI to show the final state
             timerElement.textContent = formatTime(lastStep.time); // Show the final time
-            countdownElement.textContent = "All steps completed!";
+            countdownElement.textContent = "Ccompleted, enjoy your coffee!";
             instructionElement.textContent = lastStep.instruction; // Keep the last instruction on screen
             instruction2Element.textContent = `Scale: ${lastStep.scale}`; // Show the final scale value
-    
-            // Optionally, disable the reset button or change its text
             startResetButton.textContent = 'Again';
         }
     }
