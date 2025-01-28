@@ -9,30 +9,32 @@ body {
     text-align: center;
     font-size: 2em;
     font-weight: 400;
-    background-color:black;
-    color:whitesmoke;
+    background-color: black;
+    color: whitesmoke;
 }
 
 #instruction {
-    font-size: 8cqw;
+    font-size: 6cqw;
     margin: 1rem;
 }
 
 #instruction2 {
-    display: inline-block;
-    font-size: 5cqw;
+    display: inline;
+    ;
+    font-size: 4cqw;
     margin: 1rem;
 }
 
 #timer {
-    display: inline-block;
-    font-size: 5cqw;
+    display: block;
+    font-size: 4cqw;
+    ;
     margin: 1rem;
 }
 
 #countdown {
-    display: inline-block;
-    font-size: 5cqw;
+    display: inline;
+    font-size: 4cqw;
     margin: 1rem;
 }
 
@@ -41,24 +43,25 @@ body {
 }
 
 #info {
+    margin-top: 1rem;
     font-size: 4cqw;
-    color:rgba(255, 255, 255, 0.5);
-    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1rem;
 }
 
 button {
     font-family: 'mononoki', monospace;
     font-weight: 400;
-    font-size: 1.5rem;
-    padding: 1rem 1rem;
+    font-size: 6cqw;
+    padding: 1rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
     background-color: whitesmoke;
     border-radius: 1rem;
     border-style: none;
     color: black;
-    min-width: 50cqw; /* Width */
-    height: 4rem;
+    min-width: 50cqw;
+    /* Width */
 }
 
 button:hover {
@@ -69,7 +72,8 @@ button:hover {
     display: block;
     color: coral;
     margin: 5rem;
-    padding: 1rem; /* Add padding for better visibility */
+    padding: 1rem;
+    /* Add padding for better visibility */
     background: linear-gradient(90deg, rgb(60, 60, 60) 50%, transparent 50%);
     background-size: 200% 100%;
     background-position: right;
@@ -90,7 +94,7 @@ button:hover {
 
 #subtitle {
     font-size: 3cqw;
-    background-color: rgb(33,33,33);
+    background-color: rgb(33, 33, 33);
     color: whitesmoke;
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -100,49 +104,63 @@ button:hover {
 }
 
 select {
-    appearance: none; /* Remove default OS styling (important for cross-browser consistency) */
-    -webkit-appearance: none; /* For Safari */
-    -moz-appearance: none; /* For Firefox */
-    background-color: #202020; /* Background color */
-    border: 0.1rem solid antiquewhite; /* Border */
-    padding: 1rem; /* Padding */
-    font-size: 16px; /* Font size */
-    border-radius: 1rem; /* Rounded corners */
-    min-width: 50cqw; /* Width */
+    appearance: none;
+    /* Remove default OS styling (important for cross-browser consistency) */
+    -webkit-appearance: none;
+    /* For Safari */
+    -moz-appearance: none;
+    /* For Firefox */
+    background-color: #202020;
+    /* Background color */
+    border: 0.1rem solid antiquewhite;
+    /* Border */
+    padding: 1rem;
+    font-size: 6cqw;
+    border-radius: 1rem;
+    /* Rounded corners */
+    min-width: 50cqw;
+    /* Width */
     margin-top: 1rem;
-    height: 4rem;
-    cursor: pointer; /* Cursor on hover */
+    cursor: pointer;
+    /* Cursor on hover */
     color: antiquewhite;
     font-family: 'mononoki', monospace;
     font-weight: 400;
-    font-size: 1.5rem;
     text-align: center;
-  }
-  
-  select:hover {
-    border-color: coral; /* Border color on hover */
-  }
-  
-  select:focus {
-    outline: none; /* Remove default focus outline */
-    border-color: coral; /* Highlight border on focus */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2); /* Add a subtle box shadow */
-  }
-  
-  select option {
-    background-color: rgb(0, 0, 0); /* Background color of options */
-    padding: 6px 8px; /* Padding for options */
-    font-size: 16px; /* Font size for options */
-  }
-  
-  select option:hover {
-    background-color: coral; /* Highlight color on hover */
-  }
-  
-  /* Style the selected option */
-  select option:checked {
+}
+
+select:hover {
+    border-color: coral;
+    /* Border color on hover */
+}
+
+select:focus {
+    outline: none;
+    /* Remove default focus outline */
+    border-color: coral;
+    /* Highlight border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    /* Add a subtle box shadow */
+}
+
+select option {
+    background-color: rgb(0, 0, 0);
+    /* Background color of options */
+    padding: 6px 8px;
+    /* Padding for options */
+    font-size: 16px;
+    /* Font size for options */
+}
+
+select option:hover {
     background-color: coral;
-  }
+    /* Highlight color on hover */
+}
+
+/* Style the selected option */
+select option:checked {
+    background-color: coral;
+}
 
 @keyframes pulse {
     0% {
@@ -167,6 +185,7 @@ select {
     99% {
         background-position: left;
     }
+
     100% {
         background-position: right;
     }
