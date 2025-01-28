@@ -101,6 +101,7 @@ button:hover {
     background-color: rgb(33, 33, 33);
     color: whitesmoke;
     padding-top: 1rem;
+    padding-bottom: 1rem;
     margin: 0;
 }
 
