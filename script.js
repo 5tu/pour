@@ -7,7 +7,7 @@ window.onload = function () {
     const startResetButton = document.getElementById('startResetButton');
 
     const recipes = {
-        "40g for 600g brewed coffee": [
+        "40g for 600g": [
             { time: 0, scale: "000g", add: "100g", duration: 10, instruction: "Pour 100g of water" },
             { time: 45, scale: "100g", add: "140g", duration: 10, instruction: "Pour 140g of water" },
             { time: 90, scale: "240g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
@@ -16,7 +16,7 @@ window.onload = function () {
             { time: 210, scale: "600g", add: "000g", duration: 30, instruction: "Wait for draw through" },
             { time: 240, scale: "600g", add: "000g", duration: 30, instruction: "Remove V60" }
         ],
-        "20g for 300g brewed coffee": [
+        "20g for 300g": [
             { time: 0, scale: "000g", add: "050g", duration: 10, instruction: "Pour 050g of water" },
             { time: 45, scale: "050g", add: "070g", duration: 10, instruction: "Pour 070g of water" },
             { time: 90, scale: "126g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
@@ -27,7 +27,7 @@ window.onload = function () {
         ],
     };
 
-    let currentRecipe = "40g for 600g brewed coffee";
+    let currentRecipe = "40g for 600g";
     let presetTimes = recipes[currentRecipe];
 
     let intervalId;
