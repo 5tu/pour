@@ -9,20 +9,20 @@ window.onload = function () {
 
     const recipes = {
         "40g for 600g": [
-            { time: 0, scale: "000g", add: "100g", duration: 10, instruction: "Pour 100g of water" },
-            { time: 45, scale: "100g", add: "140g", duration: 10, instruction: "Pour 140g of water" },
-            { time: 90, scale: "240g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
-            { time: 135, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
-            { time: 180, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
-            { time: 210, scale: "600g", add: "000g", duration: 30, instruction: "Remove V60" }
+            { time: 0, scale: "0g", add: "100g", duration: 10, instruction: "Pour 100g water" },
+            { time: 45, scale: "100g", add: "140g", duration: 10, instruction: "Pour 140g water" },
+            { time: 90, scale: "240g", add: "120g", duration: 10, instruction: "Pour 120g water" },
+            { time: 135, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g water" },
+            { time: 180, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g water" },
+            { time: 210, scale: "600g", add: "0g", duration: 0, instruction: "Remove V60" }
         ],
         "20g for 300g": [
-            { time: 0, scale: "000g", add: "050g", duration: 10, instruction: "Pour 050g of water" },
-            { time: 45, scale: "050g", add: "070g", duration: 10, instruction: "Pour 070g of water" },
-            { time: 90, scale: "126g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
-            { time: 135, scale: "180g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
-            { time: 180, scale: "240g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
-            { time: 210, scale: "300g", add: "000g", duration: 30, instruction: "Remove V60" }
+            { time: 0, scale: "0g", add: "50g", duration: 10, instruction: "Pour 50g water" },
+            { time: 45, scale: "50g", add: "70g", duration: 10, instruction: "Pour 70g water" },
+            { time: 90, scale: "126g", add: "60g", duration: 10, instruction: "Pour 60g water" },
+            { time: 135, scale: "180g", add: "60g", duration: 10, instruction: "Pour 60g water" },
+            { time: 180, scale: "240g", add: "60g", duration: 10, instruction: "Pour 60g water" },
+            { time: 210, scale: "300g", add: "0g", duration: 0, instruction: "Remove V60" }
         ],
     };
 
@@ -57,11 +57,11 @@ window.onload = function () {
             // Check if the step is one of the last two steps
             const isLastTwoSteps = index >= presetTimes.length - 1;
             // Display the instruction instead of the 'add' value for the last two steps
-            const displayText = isLastTwoSteps ? step.instruction : `Pour ${step.add}`;
+            const displayText = isLastTwoSteps ? step.instruction : `pour ${step.add}`;
 
             return `
                 <div class="preset-item" id="preset-${index}">
-                    ${formatTime(step.time)} → Scale ${step.scale} → ${displayText}
+                    ${formatTime(step.time)} - Scale reads ${step.scale} so ${displayText}
                 </div>
             `;
         }).join('');
@@ -125,7 +125,7 @@ window.onload = function () {
             instruction2Element.textContent = `Scale: ${lastStep.scale}`; // Show the final scale value
     
             // Optionally, disable the reset button or change its text
-            startResetButton.textContent = 'Reset';
+            startResetButton.textContent = 'Again';
         }
     }
 
@@ -141,17 +141,16 @@ window.onload = function () {
         instructionElement.textContent = countdown;
         isCountingDown = true;
     
-        // Disable the button during the countdown
         startResetButton.disabled = true;
-        startResetButton.textContent = '...'; // Optional: Change text to indicate countdown
+        startResetButton.textContent = '...';
     
         const countdownInterval = setInterval(() => {
-            instructionElement.textContent = --countdown || "Go!";
-            if (countdown < 0) {
+            if (countdown > 0) {
+                instructionElement.textContent = --countdown;
+            } else {
                 clearInterval(countdownInterval);
                 isCountingDown = false;
     
-                // Re-enable the button and change text to "Reset" after countdown
                 startResetButton.disabled = false;
                 startResetButton.textContent = 'Reset';
     
@@ -162,10 +161,10 @@ window.onload = function () {
 
     function resetTimer() {
         clearInterval(intervalId);
-        timerElement.textContent = "[Elapsed]";
+        timerElement.textContent = "[Elapsed time]";
         countdownElement.textContent = "[Next step]";
         instructionElement.textContent = "Select recipe and tap start";
-        instruction2Element.textContent = "[Scale]";
+        instruction2Element.textContent = "[Scale reading]";
     
         // Remove the highlight class from all steps
         presetTimes.forEach((step, index) => {
