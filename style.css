@@ -1,15 +1,16 @@
-@import url(https://fonts.bunny.net/css?family=xanh-mono:400,400i);
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/mononoki.min.css");
 
 @import url(https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css);
 
 @container (min-width: 320px) and (max-width: 4096px);
 
 body {
-    font-family: 'Xanh Mono', monospace;
+    font-family: 'mononoki', monospace;
     text-align: center;
     font-size: 2em;
     font-weight: 400;
-    background-color: blanchedalmond;
+    background-color:black;
+    color:whitesmoke;
 }
 
 #instruction {
@@ -40,35 +41,38 @@ body {
 }
 
 #info {
-    font-size: 5cqw;
-    color: #B2A48F;
+    font-size: 4cqw;
+    color:rgba(255, 255, 255, 0.5);
+    margin-bottom: 2rem;
 }
 
 button {
-    font-family: 'Xanh Mono', monospace;
+    font-family: 'mononoki', monospace;
     font-weight: 400;
-    font-style: italic;
-    font-size: 5cqw;
-    padding: 1rem 3rem;
-    margin: 1rem;
-    background-color: blanchedalmond;
-    border-radius: 0.5rem;
-    border-style: dashed;
+    font-size: 1.5rem;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    background-color: whitesmoke;
+    border-radius: 1rem;
+    border-style: none;
+    color: black;
+    width: 10rem;
+    height: 4rem;
 }
 
 button:hover {
-    background-color: darkseagreen;
+    background-color: coral;
 }
 
 .highlight {
     display: block;
-    color: black;
+    color: coral;
     margin: 5rem;
-    background: linear-gradient(to right, darkseagreen 50%, transparent 0);
+    padding: 1rem; /* Add padding for better visibility */
+    background: linear-gradient(90deg, rgb(60, 60, 60) 50%, transparent 50%);
     background-size: 200% 100%;
     background-position: right;
     animation: fillbg 10s linear forwards;
-
 }
 
 .preset-item {
@@ -77,19 +81,64 @@ button:hover {
 
 #headline {
     font-size: 5cqw;
-    background-color: darkseagreen;
-    color: black;
-    padding: 1rem;
+    background-color: rgb(33, 33, 33);
+    color: whitesmoke;
+    padding-top: 1rem;
     margin: 0;
 }
 
 #subtitle {
     font-size: 3cqw;
-    background-color: darkseagreen;
-    color: black;
+    background-color: rgb(33,33,33);
+    color: whitesmoke;
+    padding-top: 1rem;
     padding-bottom: 1rem;
+    padding-left: 2rem;
+    padding-right: 1rem;
     margin: 0;
 }
+
+select {
+    appearance: none; /* Remove default OS styling (important for cross-browser consistency) */
+    -webkit-appearance: none; /* For Safari */
+    -moz-appearance: none; /* For Firefox */
+    background-color: #202020; /* Background color */
+    border: 0.1rem solid antiquewhite; /* Border */
+    padding: 1rem; /* Padding */
+    font-size: 16px; /* Font size */
+    border-radius: 1rem; /* Rounded corners */
+    width: calc(100% - 20rem); /* Width */
+    height: 4rem;
+    cursor: pointer; /* Cursor on hover */
+    color: antiquewhite;
+    font-family: 'mononoki', monospace;
+    font-weight: 400;
+  }
+  
+  select:hover {
+    border-color: coral; /* Border color on hover */
+  }
+  
+  select:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: coral; /* Highlight border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2); /* Add a subtle box shadow */
+  }
+  
+  select option {
+    background-color: rgb(0, 0, 0); /* Background color of options */
+    padding: 6px 8px; /* Padding for options */
+    font-size: 16px; /* Font size for options */
+  }
+  
+  select option:hover {
+    background-color: coral; /* Highlight color on hover */
+  }
+  
+  /* Style the selected option */
+  select option:checked {
+    background-color: coral;
+  }
 
 @keyframes pulse {
     0% {

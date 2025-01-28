@@ -6,21 +6,34 @@ window.onload = function () {
     const infoElement = document.getElementById('info');
     const startResetButton = document.getElementById('startResetButton');
 
-    const presetTimes = [
-        { time: 0, scale: "000g", add: "100g", duration: 10, instruction: "Pour 100g of water", finished: "no" },
-        { time: 45, scale: "100g", add: "140g", duration: 10, instruction: "Pour 140g of water", finished: "no" },
-        { time: 90, scale: "240g", add: "120g", duration: 10, instruction: "Pour 120g of water", finished: "no" },
-        { time: 135, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g of water", finished: "no" },
-        { time: 180, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g of water", finished: "no" },
-        { time: 210, scale: "600g", add: "000g", duration: 0, instruction: "", finished: "yes" }
-    ];
+    const recipes = {
+        "40g for 600g brewed coffee": [
+            { time: 0, scale: "000g", add: "100g", duration: 10, instruction: "Pour 100g of water" },
+            { time: 45, scale: "100g", add: "140g", duration: 10, instruction: "Pour 140g of water" },
+            { time: 90, scale: "240g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
+            { time: 135, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
+            { time: 180, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
+            { time: 210, scale: "600g", add: "000g", duration: 30, instruction: "Wait for draw through" },
+            { time: 240, scale: "600g", add: "000g", duration: 30, instruction: "Remove V60" }
+        ],
+        "20g for 300g brewed coffee": [
+            { time: 0, scale: "000g", add: "050g", duration: 10, instruction: "Pour 050g of water" },
+            { time: 45, scale: "050g", add: "070g", duration: 10, instruction: "Pour 070g of water" },
+            { time: 90, scale: "126g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
+            { time: 135, scale: "180g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
+            { time: 180, scale: "240g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
+            { time: 210, scale: "300g", add: "000g", duration: 30, instruction: "Wait for draw through" },
+            { time: 240, scale: "300g", add: "000g", duration: 30, instruction: "Remove V60" }
+        ],
+    };
+
+    let currentRecipe = "40g for 600g brewed coffee";
+    let presetTimes = recipes[currentRecipe];
 
     let intervalId;
     let startTime;
     let isRunning = false;
     let isCountingDown = false;
-    let currentInstructionTimeout;
-    let countdownTimeouts = [];
     let resetButtonEnabled = false;
 
     function formatTime(seconds) {
@@ -31,86 +44,47 @@ window.onload = function () {
     }
 
     function updateCountdown(elapsedSeconds) {
-        let nextStepIndex = -1;
-
-        for (let i = 0; i < presetTimes.length; i++) {
-            if (elapsedSeconds < presetTimes[i].time) {
-                nextStepIndex = i;
-                break;
-            }
-        }
-
-        if (nextStepIndex !== -1) {
-            let timeRemaining = presetTimes[nextStepIndex].time - elapsedSeconds;
-            countdownElement.textContent = "Next step: " + formatTime(timeRemaining);
+        const nextStep = presetTimes.find(step => elapsedSeconds < step.time);
+        if (nextStep) {
+            const timeRemaining = nextStep.time - elapsedSeconds;
+            countdownElement.textContent = `Next step: ${formatTime(timeRemaining)}`;
+        } else {
+            countdownElement.textContent = "No more steps";
         }
     }
 
     function renderInfo() {
-        infoElement.innerHTML = '';
-        presetTimes.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'preset-item';
-            div.id = `preset-${index}`;
-            div.textContent = `${formatTime(item.time)} → Scale ${item.scale} → Pour ${item.add}`;
-            infoElement.appendChild(div);
-        });
+        infoElement.innerHTML = presetTimes.map((step, index) => `
+            <div class="preset-item" id="preset-${index}">
+                ${formatTime(step.time)} → Scale ${step.scale} → Pour ${step.add}
+            </div>
+        `).join('');
     }
 
     function updateHighlight(elapsedSeconds) {
-        let currentHighlightIndex = -1;
-
-        for (let i = 0; i < presetTimes.length; i++) {
-            if (elapsedSeconds >= presetTimes[i].time) {
-                currentHighlightIndex = i;
-            }
-        }
-
-        presetTimes.forEach((item, index) => {
+        presetTimes.forEach((step, index) => {
             const div = document.getElementById(`preset-${index}`);
-            if (index === currentHighlightIndex && index !== presetTimes.length - 1) {
+            if (elapsedSeconds >= step.time && elapsedSeconds < (step.time + step.duration)) {
                 div.classList.add('highlight');
             } else {
                 div.classList.remove('highlight');
             }
         });
-
-        if (currentHighlightIndex === presetTimes.length - 1) {
-            timerElement.textContent = "Finished";
-            countdownElement.textContent = "Enjoy your coffee!";
-            clearInterval(intervalId);
-            isRunning = false;
-            startResetButton.textContent = 'Start';
-        }
     }
 
     function updateInstruction(elapsedSeconds) {
-        if (currentInstructionTimeout) {
-            clearTimeout(currentInstructionTimeout);
-        }
-    
-        const currentStepIndex = presetTimes.findIndex(step => elapsedSeconds >= step.time && elapsedSeconds < step.time + step.duration);
-        const nextStepIndex = presetTimes.findIndex(step => elapsedSeconds < step.time);
-    
-        if (currentStepIndex !== -1) {
-            const currentStep = presetTimes[currentStepIndex];
+        const currentStep = presetTimes.find(step => elapsedSeconds >= step.time && elapsedSeconds < (step.time + step.duration));
+        const nextStep = presetTimes.find(step => elapsedSeconds < step.time);
+
+        if (currentStep) {
             instructionElement.textContent = currentStep.instruction;
-    
-            currentInstructionTimeout = setTimeout(() => {
-                instructionElement.textContent = "Wait";
-            }, currentStep.duration * 1000);
-        } else if (nextStepIndex !== -1 && (presetTimes[nextStepIndex].time - elapsedSeconds) <= 5) {
+        } else if (nextStep && (nextStep.time - elapsedSeconds) <= 5) {
             instructionElement.textContent = "Get ready";
         } else {
             instructionElement.textContent = "Wait";
         }
-    
-        let runningTotal = 0;
-        presetTimes.forEach((step, index) => {
-            if (elapsedSeconds >= step.time) {
-                runningTotal += parseInt(step.add);
-            }
-        });
+
+        const runningTotal = presetTimes.reduce((total, step) => elapsedSeconds >= step.time ? total + parseInt(step.add) : total, 0);
         instruction2Element.textContent = `Scale: ${runningTotal}g`;
     }
 
@@ -125,10 +99,19 @@ window.onload = function () {
             resetButtonEnabled = true;
             startResetButton.textContent = 'Reset';
         }
+
+        if (elapsedTime >= presetTimes[presetTimes.length - 1].time) {
+            clearInterval(intervalId);
+            isRunning = false;
+            timerElement.textContent = "Finished";
+            countdownElement.textContent = "All steps completed!";
+            startResetButton.textContent = 'Start';
+        }
     }
 
     function startMainTimer() {
         startTime = Date.now();
+        updateTimers();
         intervalId = setInterval(updateTimers, 1000);
         isRunning = true;
     }
@@ -139,36 +122,25 @@ window.onload = function () {
         isCountingDown = true;
         startResetButton.textContent = 'Stop';
 
-        for (let i = 0; i <= 5; i++) {
-            countdownTimeouts.push(setTimeout(() => {
-                if (countdown > 0) {
-                    instructionElement.textContent = countdown;
-                    countdown--;
-                } else {
-                    startMainTimer();
-                    isCountingDown = false;
-                }
-            }, i * 1000));
-        }
-    }
-
-    function startTimer() {
-        startCountdown();
+        const countdownInterval = setInterval(() => {
+            instructionElement.textContent = --countdown || "Go!";
+            if (countdown < 0) {
+                clearInterval(countdownInterval);
+                isCountingDown = false;
+                setTimeout(startMainTimer, 100);
+            }
+        }, 1000);
     }
 
     function resetTimer() {
         clearInterval(intervalId);
-        clearTimeout(currentInstructionTimeout);
-        countdownTimeouts.forEach(timeout => clearTimeout(timeout));
-        countdownTimeouts = [];
         timerElement.textContent = "[Elapsed]";
         countdownElement.textContent = "[Next step]";
-        instructionElement.textContent = "Press 'Start' to begin";
+        instructionElement.textContent = "Select recipe and tap start";
         instruction2Element.textContent = "[Scale]";
-        presetTimes.forEach((item, index) => {
+        presetTimes.forEach((step, index) => {
             const div = document.getElementById(`preset-${index}`);
             div.classList.remove('highlight');
-            div.textContent = `${formatTime(item.time)} → Scale ${item.scale} → Pour ${item.add}`;
         });
         startResetButton.textContent = 'Start';
         resetButtonEnabled = false;
@@ -180,8 +152,25 @@ window.onload = function () {
         if (isRunning || isCountingDown) {
             resetTimer();
         } else {
-            startTimer();
+            startCountdown();
         }
+    });
+
+    // Recipe selection dropdown
+    const recipeSelect = document.createElement('select');
+    for (const recipeName in recipes) {
+        const option = document.createElement('option');
+        option.value = recipeName;
+        option.text = recipeName;
+        recipeSelect.appendChild(option);
+    }
+    infoElement.parentNode.insertBefore(recipeSelect, infoElement);
+
+    recipeSelect.addEventListener('change', () => {
+        currentRecipe = recipeSelect.value;
+        presetTimes = recipes[currentRecipe];
+        renderInfo();
+        resetTimer();
     });
 
     renderInfo();
