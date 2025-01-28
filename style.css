@@ -13,22 +13,29 @@ body {
     color: whitesmoke;
 }
 
+#container {
+    display: flex;
+    /* Use flexbox for horizontal arrangement */
+    align-items: center;
+    /* Vertically align items */
+    padding: 1rem;
+}
+
 #instruction {
     font-size: 6cqw;
     margin: 1rem;
 }
 
 #instruction2 {
-    display: inline;
-    ;
-    font-size: 4cqw;
-    margin: 1rem;
+    display: block;
+    font-size: 6cqw;
+    margin: 2rem;
 }
 
 #timer {
     display: block;
-    font-size: 4cqw;
-    ;
+    color: rgb(66, 66, 66);
+    font-size: 8cqw;
     margin: 1rem;
 }
 
@@ -52,16 +59,14 @@ body {
 button {
     font-family: 'mononoki', monospace;
     font-weight: 400;
-    font-size: 6cqw;
+    font-size: 4cqw;
     padding: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem;
     background-color: whitesmoke;
     border-radius: 1rem;
     border-style: none;
     color: black;
-    min-width: 50cqw;
-    /* Width */
+    width: 100%;
 }
 
 button:hover {
@@ -72,7 +77,7 @@ button:hover {
     display: block;
     color: coral;
     margin: 5rem;
-    padding: 1rem;
+    padding: 0rem;
     /* Add padding for better visibility */
     background: linear-gradient(90deg, rgb(60, 60, 60) 50%, transparent 50%);
     background-size: 200% 100%;
@@ -80,8 +85,15 @@ button:hover {
     animation: fillbg 10s linear forwards;
 }
 
+.completed {
+    color: #00796b;
+    /* Dark green text */
+    text-decoration: line-through;
+    /* Strikethrough text */
+}
+
 .preset-item {
-    margin: 0.5em 0;
+    margin: 1rem 1rem;
 }
 
 #headline {
@@ -105,24 +117,16 @@ button:hover {
 
 select {
     appearance: none;
-    /* Remove default OS styling (important for cross-browser consistency) */
     -webkit-appearance: none;
-    /* For Safari */
     -moz-appearance: none;
-    /* For Firefox */
     background-color: #202020;
-    /* Background color */
     border: 0.1rem solid antiquewhite;
-    /* Border */
     padding: 1rem;
-    font-size: 6cqw;
+    font-size: 4cqw;
     border-radius: 1rem;
-    /* Rounded corners */
     min-width: 50cqw;
-    /* Width */
-    margin-top: 1rem;
+    margin: 1rem;
     cursor: pointer;
-    /* Cursor on hover */
     color: antiquewhite;
     font-family: 'mononoki', monospace;
     font-weight: 400;
@@ -131,62 +135,30 @@ select {
 
 select:hover {
     border-color: coral;
-    /* Border color on hover */
 }
 
 select:focus {
     outline: none;
-    /* Remove default focus outline */
     border-color: coral;
-    /* Highlight border on focus */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-    /* Add a subtle box shadow */
 }
 
 select option {
     background-color: rgb(0, 0, 0);
-    /* Background color of options */
-    padding: 6px 8px;
-    /* Padding for options */
-    font-size: 16px;
-    /* Font size for options */
+    padding: 1rem;
+    font-size: 4cqw;
 }
 
 select option:hover {
     background-color: coral;
-    /* Highlight color on hover */
 }
 
-/* Style the selected option */
 select option:checked {
     background-color: coral;
 }
 
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(143, 188, 143, 1);
-    }
-
-    70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 1rem rgba(51, 217, 178, 0);
-    }
-
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
-    }
-
-
-}
-
 @keyframes fillbg {
-    99% {
+    100% {
         background-position: left;
     }
 
-    100% {
-        background-position: right;
-    }
 }

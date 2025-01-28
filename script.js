@@ -15,7 +15,7 @@ window.onload = function () {
             { time: 135, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
             { time: 180, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
             { time: 210, scale: "600g", add: "000g", duration: 30, instruction: "Drawing through" },
-            { time: 240, scale: "600g", add: "000g", duration: 30, instruction: "Remove V60" }
+            { time: 240, scale: "600g", add: "000g", duration: 0, instruction: "Remove V60" }
         ],
         "20g for 300g": [
             { time: 0, scale: "000g", add: "050g", duration: 10, instruction: "Pour 050g of water" },
@@ -24,7 +24,7 @@ window.onload = function () {
             { time: 135, scale: "180g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
             { time: 180, scale: "240g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
             { time: 210, scale: "300g", add: "000g", duration: 30, instruction: "Drawing through" },
-            { time: 240, scale: "300g", add: "000g", duration: 30, instruction: "Remove V60" }
+            { time: 240, scale: "300g", add: "000g", duration: 0, instruction: "Remove V60" }
         ],
     };
 
@@ -72,14 +72,20 @@ window.onload = function () {
     function updateHighlight(elapsedSeconds) {
         presetTimes.forEach((step, index) => {
             const div = document.getElementById(`preset-${index}`);
+    
+            // Remove both classes initially
+            div.classList.remove('highlight', 'completed');
+    
+            // Check if the step is currently active
             if (elapsedSeconds >= step.time && elapsedSeconds < (step.time + step.duration)) {
-                div.classList.add('highlight');
-            } else {
-                div.classList.remove('highlight');
+                div.classList.add('highlight'); // Add highlight for the active step
+            }
+            // Check if the step has been completed
+            else if (elapsedSeconds >= (step.time + step.duration)) {
+                div.classList.add('completed'); // Add completed for finished steps
             }
         });
     }
-
     function updateInstruction(elapsedSeconds) {
         const currentStep = presetTimes.find(step => elapsedSeconds >= step.time && elapsedSeconds < (step.time + step.duration));
         const nextStep = presetTimes.find(step => elapsedSeconds < step.time);
@@ -102,18 +108,26 @@ window.onload = function () {
         updateHighlight(elapsedTime);
         updateCountdown(elapsedTime);
         updateInstruction(elapsedTime);
-
+    
         if (!resetButtonEnabled && Date.now() - startTime >= 250) {
             resetButtonEnabled = true;
             startResetButton.textContent = 'Reset';
         }
-
-        if (elapsedTime >= presetTimes[presetTimes.length - 1].time) {
-            clearInterval(intervalId);
+    
+        // Check if the elapsed time has reached the last step
+        const lastStep = presetTimes[presetTimes.length - 1];
+        if (elapsedTime >= lastStep.time) {
+            clearInterval(intervalId); // Stop the timer
             isRunning = false;
-            timerElement.textContent = "Finished";
+    
+            // Update the UI to show the final state
+            timerElement.textContent = formatTime(lastStep.time); // Show the final time
             countdownElement.textContent = "All steps completed!";
-            startResetButton.textContent = 'Start';
+            instructionElement.textContent = lastStep.instruction; // Keep the last instruction on screen
+            instruction2Element.textContent = `Scale: ${lastStep.scale}`; // Show the final scale value
+    
+            // Optionally, disable the reset button or change its text
+            startResetButton.textContent = 'Start Over';
         }
     }
 
@@ -128,13 +142,21 @@ window.onload = function () {
         let countdown = 5;
         instructionElement.textContent = countdown;
         isCountingDown = true;
-        startResetButton.textContent = 'Stop';
-
+    
+        // Disable the button during the countdown
+        startResetButton.disabled = true;
+        startResetButton.textContent = '...'; // Optional: Change text to indicate countdown
+    
         const countdownInterval = setInterval(() => {
             instructionElement.textContent = --countdown || "Go!";
             if (countdown < 0) {
                 clearInterval(countdownInterval);
                 isCountingDown = false;
+    
+                // Re-enable the button and change text to "Reset" after countdown
+                startResetButton.disabled = false;
+                startResetButton.textContent = 'Reset';
+    
                 setTimeout(startMainTimer, 100);
             }
         }, 1000);
@@ -146,10 +168,15 @@ window.onload = function () {
         countdownElement.textContent = "[Next step]";
         instructionElement.textContent = "Select recipe and tap start";
         instruction2Element.textContent = "[Scale]";
+    
+        // Remove the highlight class from all steps
         presetTimes.forEach((step, index) => {
             const div = document.getElementById(`preset-${index}`);
-            div.classList.remove('highlight');
+            div.classList.remove('highlight'); // Only remove the highlight class
         });
+    
+        // Reset button state
+        startResetButton.disabled = false; // Re-enable the button
         startResetButton.textContent = 'Start';
         resetButtonEnabled = false;
         isRunning = false;
