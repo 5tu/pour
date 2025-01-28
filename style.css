@@ -51,12 +51,13 @@ button {
     font-weight: 400;
     font-size: 1.5rem;
     padding: 1rem 1rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     background-color: whitesmoke;
     border-radius: 1rem;
     border-style: none;
     color: black;
-    width: 7rem;
+    min-width: 50cqw; /* Width */
     height: 4rem;
 }
 
@@ -107,7 +108,8 @@ select {
     padding: 1rem; /* Padding */
     font-size: 16px; /* Font size */
     border-radius: 1rem; /* Rounded corners */
-    width: 14rem; /* Width */
+    min-width: 50cqw; /* Width */
+    margin-top: 1rem;
     height: 4rem;
     cursor: pointer; /* Cursor on hover */
     color: antiquewhite;

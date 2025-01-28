@@ -5,6 +5,7 @@ window.onload = function () {
     const instruction2Element = document.getElementById('instruction2');
     const infoElement = document.getElementById('info');
     const startResetButton = document.getElementById('startResetButton');
+    const dropdownContainer = document.getElementById('dropdown-container'); // New container for the dropdown
 
     const recipes = {
         "40g for 600g": [
@@ -13,7 +14,7 @@ window.onload = function () {
             { time: 90, scale: "240g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
             { time: 135, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
             { time: 180, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g of water" },
-            { time: 210, scale: "600g", add: "000g", duration: 30, instruction: "Wait for draw through" },
+            { time: 210, scale: "600g", add: "000g", duration: 30, instruction: "Drawing through" },
             { time: 240, scale: "600g", add: "000g", duration: 30, instruction: "Remove V60" }
         ],
         "20g for 300g": [
@@ -22,7 +23,7 @@ window.onload = function () {
             { time: 90, scale: "126g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
             { time: 135, scale: "180g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
             { time: 180, scale: "240g", add: "060g", duration: 10, instruction: "Pour 060g of water" },
-            { time: 210, scale: "300g", add: "000g", duration: 30, instruction: "Wait for draw through" },
+            { time: 210, scale: "300g", add: "000g", duration: 30, instruction: "Drawing through" },
             { time: 240, scale: "300g", add: "000g", duration: 30, instruction: "Remove V60" }
         ],
     };
@@ -54,11 +55,18 @@ window.onload = function () {
     }
 
     function renderInfo() {
-        infoElement.innerHTML = presetTimes.map((step, index) => `
-            <div class="preset-item" id="preset-${index}">
-                ${formatTime(step.time)} → Scale ${step.scale} → Pour ${step.add}
-            </div>
-        `).join('');
+        infoElement.innerHTML = presetTimes.map((step, index) => {
+            // Check if the step is one of the last two steps
+            const isLastTwoSteps = index >= presetTimes.length - 2;
+            // Display the instruction instead of the 'add' value for the last two steps
+            const displayText = isLastTwoSteps ? step.instruction : `Pour ${step.add}`;
+
+            return `
+                <div class="preset-item" id="preset-${index}">
+                    ${formatTime(step.time)} → Scale ${step.scale} → ${displayText}
+                </div>
+            `;
+        }).join('');
     }
 
     function updateHighlight(elapsedSeconds) {
@@ -164,7 +172,7 @@ window.onload = function () {
         option.text = recipeName;
         recipeSelect.appendChild(option);
     }
-    infoElement.parentNode.insertBefore(recipeSelect, infoElement);
+    dropdownContainer.appendChild(recipeSelect); // Insert dropdown into the dropdown container
 
     recipeSelect.addEventListener('change', () => {
         currentRecipe = recipeSelect.value;
