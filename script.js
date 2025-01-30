@@ -5,30 +5,11 @@ window.onload = function () {
     const instruction2Element = document.getElementById('instruction2');
     const infoElement = document.getElementById('info');
     const startResetButton = document.getElementById('startResetButton');
-    const dropdownContainer = document.getElementById('dropdown-container'); // New container for the dropdown
+    const dropdownContainer = document.getElementById('dropdown-container');
 
-    const recipes = {
-        "40g/600g Sweeter": [
-            { time: 0, scale: "0g", add: "100g", duration: 10, instruction: "Pour 100g water" },
-            { time: 45, scale: "100g", add: "140g", duration: 10, instruction: "Pour 140g water" },
-            { time: 90, scale: "240g", add: "120g", duration: 10, instruction: "Pour 120g water" },
-            { time: 130, scale: "360g", add: "120g", duration: 10, instruction: "Pour 120g water" },
-            { time: 160, scale: "480g", add: "120g", duration: 10, instruction: "Pour 120g water" },
-            { time: 210, scale: "600g", add: "0g", duration: 0, instruction: "Remove V60" }
-        ],
-        "20g/300g Sweeter": [
-            { time: 0, scale: "0g", add: "50g", duration: 10, instruction: "Pour 50g water" },
-            { time: 45, scale: "50g", add: "70g", duration: 10, instruction: "Pour 70g water" },
-            { time: 90, scale: "126g", add: "60g", duration: 10, instruction: "Pour 60g water" },
-            { time: 130, scale: "180g", add: "60g", duration: 10, instruction: "Pour 60g water" },
-            { time: 160, scale: "240g", add: "60g", duration: 10, instruction: "Pour 60g water" },
-            { time: 210, scale: "300g", add: "0g", duration: 0, instruction: "Remove V60" }
-        ],
-    };
-
-    let currentRecipe = "40g/600g Sweeter";
-    let presetTimes = recipes[currentRecipe];
-
+    let recipes;
+    let currentRecipe;
+    let presetTimes;
     let intervalId;
     let startTime;
     let isRunning = false;
@@ -54,9 +35,7 @@ window.onload = function () {
 
     function renderInfo() {
         infoElement.innerHTML = presetTimes.map((step, index) => {
-            // Check if the step is one of the last two steps
             const isLastTwoSteps = index >= presetTimes.length - 1;
-            // Display the instruction instead of the 'add' value for the last two steps
             const displayText = isLastTwoSteps ? step.instruction : `pour ${step.add}`;
 
             return `
@@ -70,20 +49,15 @@ window.onload = function () {
     function updateHighlight(elapsedSeconds) {
         presetTimes.forEach((step, index) => {
             const div = document.getElementById(`preset-${index}`);
-    
-            // Remove both classes initially
             div.classList.remove('highlight', 'completed');
-    
-            // Check if the step is currently active
             if (elapsedSeconds >= step.time && elapsedSeconds < (step.time + step.duration)) {
-                div.classList.add('highlight'); // Add highlight for the active step
-            }
-            // Check if the step has been completed
-            else if (elapsedSeconds >= (step.time + step.duration)) {
-                div.classList.add('completed'); // Add completed for finished steps
+                div.classList.add('highlight');
+            } else if (elapsedSeconds >= (step.time + step.duration)) {
+                div.classList.add('completed');
             }
         });
     }
+
     function updateInstruction(elapsedSeconds) {
         const currentStep = presetTimes.find(step => elapsedSeconds >= step.time && elapsedSeconds < (step.time + step.duration));
         const nextStep = presetTimes.find(step => elapsedSeconds < step.time);
@@ -106,23 +80,20 @@ window.onload = function () {
         updateHighlight(elapsedTime);
         updateCountdown(elapsedTime);
         updateInstruction(elapsedTime);
-    
+
         if (!resetButtonEnabled && Date.now() - startTime >= 250) {
             resetButtonEnabled = true;
             startResetButton.textContent = 'Reset';
         }
-    
-        // Check if the elapsed time has reached the last step
+
         const lastStep = presetTimes[presetTimes.length - 1];
         if (elapsedTime >= lastStep.time) {
-            clearInterval(intervalId); // Stop the timer
+            clearInterval(intervalId);
             isRunning = false;
-    
-            // Update the UI to show the final state
-            timerElement.textContent = formatTime(lastStep.time); // Show the final time
-            countdownElement.textContent = "Ccompleted, enjoy your coffee!";
-            instructionElement.textContent = lastStep.instruction; // Keep the last instruction on screen
-            instruction2Element.textContent = `Scale: ${lastStep.scale}`; // Show the final scale value
+            timerElement.textContent = formatTime(lastStep.time);
+            countdownElement.textContent = "Completed, enjoy your coffee!";
+            instructionElement.textContent = lastStep.instruction;
+            instruction2Element.textContent = `Scale: ${lastStep.scale}`;
             startResetButton.textContent = 'Again';
         }
     }
@@ -138,20 +109,20 @@ window.onload = function () {
         let countdown = 5;
         instructionElement.textContent = countdown;
         isCountingDown = true;
-    
+
         startResetButton.disabled = true;
         startResetButton.textContent = '...';
-    
+
         const countdownInterval = setInterval(() => {
             if (countdown > 0) {
                 instructionElement.textContent = --countdown;
             } else {
                 clearInterval(countdownInterval);
                 isCountingDown = false;
-    
+
                 startResetButton.disabled = false;
                 startResetButton.textContent = 'Reset';
-    
+
                 setTimeout(startMainTimer, 100);
             }
         }, 1000);
@@ -163,15 +134,13 @@ window.onload = function () {
         countdownElement.textContent = "[Next step]";
         instructionElement.textContent = "Select recipe and tap start";
         instruction2Element.textContent = "[Scale reading]";
-    
-        // Remove the highlight class from all steps
+
         presetTimes.forEach((step, index) => {
             const div = document.getElementById(`preset-${index}`);
-            div.classList.remove('highlight'); // Only remove the highlight class
+            div.classList.remove('highlight', 'completed');
         });
-    
-        // Reset button state
-        startResetButton.disabled = false; // Re-enable the button
+
+        startResetButton.disabled = false;
         startResetButton.textContent = 'Start';
         resetButtonEnabled = false;
         isRunning = false;
@@ -186,22 +155,35 @@ window.onload = function () {
         }
     });
 
-    // Recipe selection dropdown
-    const recipeSelect = document.createElement('select');
-    for (const recipeName in recipes) {
-        const option = document.createElement('option');
-        option.value = recipeName;
-        option.text = recipeName;
-        recipeSelect.appendChild(option);
-    }
-    dropdownContainer.appendChild(recipeSelect); // Insert dropdown into the dropdown container
 
-    recipeSelect.addEventListener('change', () => {
-        currentRecipe = recipeSelect.value;
-        presetTimes = recipes[currentRecipe];
-        renderInfo();
-        resetTimer();
-    });
+    fetch('recipes.json')
+        .then(response => response.json())
+        .then(data => {
+            recipes = data;
+            currentRecipe = Object.keys(recipes)[0];
+            presetTimes = recipes[currentRecipe];
+            renderInfo();
 
-    renderInfo();
+            const recipeSelect = document.createElement('select');
+            for (const recipeName in recipes) {
+                const option = document.createElement('option');
+                option.value = recipeName;
+                option.text = recipeName;
+                recipeSelect.appendChild(option);
+            }
+            dropdownContainer.appendChild(recipeSelect);
+
+            recipeSelect.addEventListener('change', () => {
+                currentRecipe = recipeSelect.value;
+                presetTimes = recipes[currentRecipe];
+                renderInfo();
+                resetTimer();
+            });
+
+        })
+        .catch(error => {
+            console.error('Error loading recipes:', error);
+            instructionElement.textContent = "Error loading recipes.";
+        });
+
 };
