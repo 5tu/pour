@@ -1,48 +1,53 @@
-@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/mononoki.min.css");
-
-@import url(https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css);
-
-@container (min-width: 320px) and (max-width: 4096px);
+@import url("https://cdnfonts.com/sf-mono.font");
+@import url("reset.css");
 
 body {
-    font-family: 'mononoki', monospace;
+    font-family: 'SF Mono', monospace;
     text-align: center;
-    font-size: 2em;
+    font-size: 1.5em; /* Reduced base font size */
     font-weight: 400;
-    background-color: black;
-    color: whitesmoke;
+    background-color: #2E3440; /* Nord Polar Night */
+    color: #D8DEE9; /* Nord Snow Storm */
+    margin: 0; /* Ensure no margin around the body */
+    padding: 0; /* Ensure no padding around the body */
+}
+
+#contentpage {
+    width: 100%;
+    height: 100%;
+    max-width: 56.25vh;
+}
+
+@media (min-aspect-ratio: 9/16) {
+    #contentpage {
+        width: 56.25vh;
+        height: auto;
+        max-width: none;
+    }
 }
 
 #container {
     display: flex;
-    /* Use flexbox for horizontal arrangement */
     align-items: center;
-    /* Vertically align items */
     padding: 1rem;
 }
 
-#instruction {
-    font-size: 6cqw;
-    margin: 1rem;
-}
-
-#instruction2 {
-    display: block;
-    font-size: 6cqw;
-    margin: 2rem;
+#instruction, #instruction2 {
+    font-size: 5cqw; /* Adjusted for better fit */
+    margin: 0.5rem; /* Reduced margin */
 }
 
 #timer {
     display: block;
-    color: rgb(66, 66, 66);
-    font-size: 8cqw;
-    margin: 1rem;
+    color: #4C566A; /* Nord Frost */
+    font-size: 6cqw; /* Adjusted for better fit */
+    margin: 0.5rem; /* Reduced margin */
 }
 
 #countdown {
     display: inline;
-    font-size: 4cqw;
-    margin: 1rem;
+    font-size: 3.5cqw; /* Adjusted for better fit */
+    margin: 0.5rem; /* Reduced margin */
 }
 
 #controls {
@@ -50,46 +55,43 @@ body {
 }
 
 #info {
-    margin-top: 1rem;
-    font-size: 4cqw;
-    color: rgba(255, 255, 255, 0.5);
-    margin-bottom: 1rem;
+    margin-top: 0.5rem; /* Reduced margin */
+    font-size: 3.5cqw; /* Adjusted for better fit */
+    color: #81A1C1; /* Nord Frost */
+    margin-bottom: 0.5rem; /* Reduced margin */
 }
 
 button {
-    font-family: 'mononoki', monospace;
+    font-family: 'SF Mono', monospace;
     font-weight: 400;
-    font-size: 4cqw;
-    padding: 1rem;
-    margin: 1rem;
-    background-color: whitesmoke;
+    font-size: 3.5cqw; /* Adjusted for better fit */
+    padding: 0.8rem; /* Reduced padding */
+    margin: 0.5rem; /* Reduced margin */
+    background-color: #D8DEE9; /* Nord Snow Storm */
     border-radius: 1rem;
     border-style: none;
-    color: black;
+    color: #2E3440; /* Nord Polar Night */
     width: 100%;
 }
 
 button:hover {
-    background-color: coral;
+    background-color: #88C0D0; /* Nord Frost */
 }
 
 .highlight {
     display: block;
-    color: coral;
+    color: #BF616A; /* Nord Aurora */
     margin: 5rem;
     padding: 0rem;
-    /* Add padding for better visibility */
-    background: linear-gradient(90deg, rgb(60, 60, 60) 50%, transparent 50%);
+    background: linear-gradient(90deg, #81A1C1 50%, transparent 50%); /* Updated to Nord Frost */
     background-size: 200% 100%;
     background-position: right;
     animation: fillbg 10s linear forwards;
 }
 
 .completed {
-    color: #00796b;
-    /* Dark green text */
+    color: #A3BE8C; /* Nord Aurora */
     text-decoration: line-through;
-    /* Strikethrough text */
 }
 
 .preset-item {
@@ -97,69 +99,67 @@ button:hover {
 }
 
 #headline {
-    font-size: 5cqw;
-    background-color: rgb(33, 33, 33);
-    color: whitesmoke;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    margin: 0;
+    font-size: 4cqw; /* Adjusted for better fit */
+    background-color: #3B4252; /* Nord Polar Night */
+    color: #D8DEE9; /* Nord Snow Storm */
+    padding: 1rem; /* Remove padding */
+    margin: 0; /* Remove margin */
+    width: 100vw; /* Ensure it spans the full viewport width */
 }
 
 #subtitle {
-    font-size: 3cqw;
-    background-color: rgb(33, 33, 33);
-    color: whitesmoke;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    padding-left: 2rem;
-    padding-right: 1rem;
-    margin: 0;
+    font-size: 2.5cqw; /* Adjusted for better fit */
+    background-color: #3B4252; /* Nord Polar Night */
+    color: #D8DEE9; /* Nord Snow Storm */
+    padding: 1rem; /* Adjust padding as needed */
+    margin: 0; /* Remove any margin */
+    width: 100vw; /* Ensure it spans the full viewport width */
+    box-sizing: border-box; /* Include padding and borders in width */
 }
 
 select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: #202020;
-    border: 0.1rem solid antiquewhite;
-    padding: 1rem;
-    font-size: 4cqw;
+    background-color: #434C5E; /* Nord Polar Night */
+    border: 0.1rem solid #D8DEE9; /* Nord Snow Storm */
+    padding: 0.8rem; /* Reduced padding */
+    font-size: 3.5cqw; /* Adjusted for better fit */
     border-radius: 1rem;
     min-width: 50cqw;
-    margin: 1rem;
+    margin: 0.5rem; /* Reduced margin */
     cursor: pointer;
-    color: antiquewhite;
-    font-family: 'mononoki', monospace;
+    color: #D8DEE9; /* Nord Snow Storm */
+    font-family: 'SF Mono', monospace;
     font-weight: 400;
     text-align: center;
 }
 
 select:hover {
-    border-color: coral;
+    border-color: #88C0D0; /* Nord Frost */
 }
 
 select:focus {
     outline: none;
-    border-color: coral;
+    border-color: #88C0D0; /* Nord Frost */
 }
 
 select option {
-    background-color: rgb(0, 0, 0);
-    padding: 1rem;
-    font-size: 4cqw;
+    background-color: #2E3440; /* Nord Polar Night */
+    padding: 0.8rem; /* Reduced padding */
+    font-size: 3.5cqw; /* Adjusted for better fit */
 }
 
 select option:hover {
-    background-color: coral;
+    background-color: #88C0D0; /* Nord Frost */
 }
 
 select option:checked {
-    background-color: coral;
+    background-color: #88C0D0; /* Nord Frost */
 }
 
 @keyframes fillbg {
     100% {
         background-position: left;
     }
-
 }
