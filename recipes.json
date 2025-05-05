@@ -1,18 +1,27 @@
 {
     "40g/600g Sweeter": [
-      { "time": 0, "scale": "0g", "add": "100g", "duration": 10, "instruction": "Pour 100g water" },
-      { "time": 40, "scale": "100g", "add": "140g", "duration": 10, "instruction": "Pour 140g water" },
-      { "time": 80, "scale": "240g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
-      { "time": 120, "scale": "360g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
-      { "time": 160, "scale": "480g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
-      { "time": 200, "scale": "600g", "add": "0g", "duration": 0, "instruction": "Remove V60" }
+        { "time": 0, "scale": "0g", "add": "100g", "duration": 10, "instruction": "Pour 100g water" },
+        { "time": 40, "scale": "100g", "add": "140g", "duration": 10, "instruction": "Pour 140g water" },
+        { "time": 80, "scale": "240g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
+        { "time": 120, "scale": "360g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
+        { "time": 160, "scale": "480g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
+        { "time": 200, "scale": "600g", "add": "0g", "duration": 0, "instruction": "Remove V60" }
+    ],
+    "40g/720g Sweeter": [
+        { "time": 0, "scale": "0g", "add": "100g", "duration": 10, "instruction": "Pour 100g water" },
+        { "time": 40, "scale": "100g", "add": "140g", "duration": 10, "instruction": "Pour 140g water" },
+        { "time": 80, "scale": "240g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
+        { "time": 120, "scale": "360g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
+        { "time": 160, "scale": "480g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
+        { "time": 200, "scale": "600g", "add": "120g", "duration": 10, "instruction": "Pour 120g water" },
+        { "time": 240, "scale": "720g", "add": "0g", "duration": 0, "instruction": "Remove V60" }
     ],
     "20g/300g Sweeter": [
-      { "time": 0, "scale": "0g", "add": "50g", "duration": 10, "instruction": "Pour 50g water" },
-      { "time": 40, "scale": "50g", "add": "70g", "duration": 10, "instruction": "Pour 70g water" },
-      { "time": 80, "scale": "120g", "add": "60g", "duration": 10, "instruction": "Pour 60g water" },
-      { "time": 120, "scale": "180g", "add": "60g", "duration": 10, "instruction": "Pour 60g water" },
-      { "time": 160, "scale": "240g", "add": "60g", "duration": 10, "instruction": "Pour 60g water" },
-      { "time": 200, "scale": "300g", "add": "0g", "duration": 0, "instruction": "Remove V60" }
+        { "time": 0, "scale": "0g", "add": "50g", "duration": 10, "instruction": "Pour 50g water" },
+        { "time": 40, "scale": "50g", "add": "70g", "duration": 10, "instruction": "Pour 70g water" },
+        { "time": 80, "scale": "120g", "add": "60g", "duration": 10, "instruction": "Pour 60g water" },
+        { "time": 120, "scale": "180g", "add": "60g", "duration": 10, "instruction": "Pour 60g water" },
+        { "time": 160, "scale": "240g", "add": "60g", "duration": 10, "instruction": "Pour 60g water" },
+        { "time": 200, "scale": "300g", "add": "0g", "duration": 0, "instruction": "Remove V60" }
     ]
-  }
+}
