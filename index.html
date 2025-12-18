@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced 4:6 V60 (v2.3)</title>
-    <style>
-        @import "style.css";
-    </style>
-    <script src="script.js" async></script>
+    <title>Pour</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
-    <div id="contentpage">
-    
-    <div id="headline">Advanced 4:6 V60 (v2.3)</div>
+    <div class="container">
+        <!-- Control Panel -->
+        <div class="controls">
+            <select id="recipeSelect">
+                <option value="">Select a recipe...</option>
+            </select>
+            <div class="button-group">
+                <button id="startBtn" disabled>Start</button>
+                <button id="stopBtn" disabled>Stop</button>
+                <button id="resetBtn" disabled>Reset</button>
+            </div>
+        </div>
 
-    <div id="container">  <div id="dropdown-container"></div>  <button id="startResetButton">Start</button>
-</div>
-
-    <div id="instruction">Select recipe and tap start</div>
-
-    <div id="instruction2">[Scale reading]</div>
+        <!-- Timeline Container -->
+        <div class="timeline-wrapper">
+            <div class="timeline-message timeline-message-top" id="topMessage" aria-hidden="true">Get ready!</div>
+            <div class="timeline-indicator-container" aria-hidden="true">
+                <div class="timeline-indicator" role="status" aria-live="polite"></div>
+            </div>
+            <div class="timeline-scroll" id="timelineScroll">
+                <div class="timeline-content" id="timelineContent">
+                    <!-- Timeline items will be inserted here -->
+                </div>
+            </div>
+            <div class="timeline-message timeline-message-bottom" id="bottomMessage" aria-hidden="true">Enjoy your coffee!</div>
+        </div>
     </div>
 
-    <div id="countdown">[Next step]</div>
-
-    <div id="info"></div>
-
-    <div id="subtitle">Each pour lasts 10 seconds. Water temperature should be ~92 degrees Celsius.<br><br>Adjust grind size until each draw though matches the timing.  The final weight of brewed coffee is less the retained water in the grinds/filter<br><br>Rinse V60 filter and tare scale before starting</div>
-
-    <div id="timer">[Elapsed time]</div>
-
-</div>
+    <script src="script.js"></script>
 </body>
-
 </html>

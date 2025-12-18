@@ -1,165 +1,441 @@
-@import url("https://cdnfonts.com/sf-mono.font");
-@import url("reset.css");
+:root {
+    --fade-time: 250ms; /* global fade time */
+
+    /* Dark, purple-emphasis theme */
+    --bg-1: #050615;
+    --bg-2: #090a1f;
+
+    --surface: rgba(255, 255, 255, 0.04);
+    --surface-2: rgba(255, 255, 255, 0.02);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-2: rgba(255, 255, 255, 0.06);
+
+    --text: rgba(255, 255, 255, 0.86);
+    --text-muted: rgba(255, 255, 255, 0.62);
+    --text-dim: rgba(255, 255, 255, 0.36);
+
+    --accent: #8b5cf6;   /* purple */
+    --accent-2: #a78bfa; /* lighter purple */
+
+    /* Timeline: make main line muted, pours pop */
+    --timeline-track: rgba(255, 255, 255, 0.06);
+    --timeline-fill: rgba(139, 92, 246, 0.40);
+    --pour-track: rgba(255, 255, 255, 0.08);
+    --pour-fill-1: #a78bfa;
+    --pour-fill-2: #ddd6fe;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    font-family: 'SF Mono', monospace;
-    text-align: center;
-    font-size: 1.5em; /* Reduced base font size */
-    font-weight: 400;
-    background-color: #2E3440; /* Nord Polar Night */
-    color: #D8DEE9; /* Nord Snow Storm */
-    margin: 0; /* Ensure no margin around the body */
-    padding: 0; /* Ensure no padding around the body */
+    font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--text);
+    background:
+        radial-gradient(900px 600px at 15% 10%, rgba(139, 92, 246, 0.18), transparent),
+        radial-gradient(700px 500px at 85% 20%, rgba(167, 139, 250, 0.10), transparent),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    overflow: hidden;
+    height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-#contentpage {
-    width: 100%;
-    height: 100%;
-    max-width: 56.25vh;
-}
-
-@media (min-aspect-ratio: 9/16) {
-    #contentpage {
-        width: 56.25vh;
-        height: auto;
-        max-width: none;
-    }
-}
-
-#container {
+.container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.controls {
     padding: 1rem;
+    background: linear-gradient(180deg, var(--surface), var(--surface-2));
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    backdrop-filter: blur(8px) saturate(120%);
 }
 
-#instruction, #instruction2 {
-    font-size: 5cqw; /* Adjusted for better fit */
-    margin: 0.5rem; /* Reduced margin */
+#recipeSelect {
+    padding: 0.85rem 0.9rem;
+    border: 1px solid var(--border);
+    font-size: 1.12rem;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    color: var(--text);
+    font-family: inherit;
+    text-align: center;
+    text-align-last: center;
+    outline: none;
+    appearance: none;
 }
 
-#timer {
-    display: block;
-    color: #4C566A; /* Nord Frost */
-    font-size: 6cqw; /* Adjusted for better fit */
-    margin: 0.5rem; /* Reduced margin */
+#recipeSelect:focus-visible {
+    border-color: rgba(139, 92, 246, 0.55);
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.18);
 }
 
-#countdown {
-    display: inline;
-    font-size: 3.5cqw; /* Adjusted for better fit */
-    margin: 0.5rem; /* Reduced margin */
-}
-
-#controls {
-    margin: 1rem;
-}
-
-#info {
-    margin-top: 0.5rem; /* Reduced margin */
-    font-size: 3.5cqw; /* Adjusted for better fit */
-    color: #81A1C1; /* Nord Frost */
-    margin-bottom: 0.5rem; /* Reduced margin */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
 }
 
 button {
-    font-family: 'SF Mono', monospace;
-    font-weight: 400;
-    font-size: 3.5cqw; /* Adjusted for better fit */
-    padding: 0.8rem; /* Reduced padding */
-    margin: 0.5rem; /* Reduced margin */
-    background-color: #D8DEE9; /* Nord Snow Storm */
-    border-radius: 1rem;
-    border-style: none;
-    color: #2E3440; /* Nord Polar Night */
-    width: 100%;
-}
-
-button:hover {
-    background-color: #88C0D0; /* Nord Frost */
-}
-
-.highlight {
-    display: block;
-    color: #BF616A; /* Nord Aurora */
-    margin: 5rem;
-    padding: 0rem;
-    background: linear-gradient(90deg, #81A1C1 50%, transparent 50%); /* Updated to Nord Frost */
-    background-size: 200% 100%;
-    background-position: right;
-    animation: fillbg 10s linear forwards;
-}
-
-.completed {
-    color: #A3BE8C; /* Nord Aurora */
-    text-decoration: line-through;
-}
-
-.preset-item {
-    margin: 1rem 1rem;
-}
-
-#headline {
-    font-size: 4cqw; /* Adjusted for better fit */
-    background-color: #3B4252; /* Nord Polar Night */
-    color: #D8DEE9; /* Nord Snow Storm */
-    padding: 1rem; /* Remove padding */
-    margin: 0; /* Remove margin */
-    width: 100vw; /* Ensure it spans the full viewport width */
-}
-
-#subtitle {
-    font-size: 2.5cqw; /* Adjusted for better fit */
-    background-color: #3B4252; /* Nord Polar Night */
-    color: #D8DEE9; /* Nord Snow Storm */
-    padding: 1rem; /* Adjust padding as needed */
-    margin: 0; /* Remove any margin */
-    width: 100vw; /* Ensure it spans the full viewport width */
-    box-sizing: border-box; /* Include padding and borders in width */
-}
-
-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: #434C5E; /* Nord Polar Night */
-    border: 0.1rem solid #D8DEE9; /* Nord Snow Storm */
-    padding: 0.8rem; /* Reduced padding */
-    font-size: 3.5cqw; /* Adjusted for better fit */
-    border-radius: 1rem;
-    min-width: 50cqw;
-    margin: 0.5rem; /* Reduced margin */
+    flex: 1;
+    padding: 0.85rem;
+    border: 1px solid var(--border);
+    font-size: 1.12rem;
+    font-family: inherit;
     cursor: pointer;
-    color: #D8DEE9; /* Nord Snow Storm */
-    font-family: 'SF Mono', monospace;
-    font-weight: 400;
-    text-align: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    color: var(--text);
+    transition:
+        transform 160ms ease,
+        background-color 160ms ease,
+        border-color 160ms ease,
+        opacity 160ms ease;
 }
 
-select:hover {
-    border-color: #88C0D0; /* Nord Frost */
+button:not(:disabled):hover {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
 }
 
-select:focus {
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+button:not(:disabled):active {
+    transform: translateY(1px);
+}
+
+button:focus-visible {
     outline: none;
-    border-color: #88C0D0; /* Nord Frost */
+    border-color: rgba(139, 92, 246, 0.55);
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.18);
 }
 
-select option {
-    background-color: #2E3440; /* Nord Polar Night */
-    padding: 0.8rem; /* Reduced padding */
-    font-size: 3.5cqw; /* Adjusted for better fit */
+/* Make Start feel “primary” without changing markup */
+#startBtn:not(:disabled) {
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.95), rgba(167, 139, 250, 0.95));
+    border-color: rgba(255, 255, 255, 0.10);
+    color: #0a071a;
+    box-shadow: 0 8px 28px rgba(139, 92, 246, 0.25);
 }
 
-select option:hover {
-    background-color: #88C0D0; /* Nord Frost */
+#startBtn:not(:disabled):hover {
+    box-shadow: 0 10px 34px rgba(139, 92, 246, 0.34);
 }
 
-select option:checked {
-    background-color: #88C0D0; /* Nord Frost */
+#startBtn:not(:disabled):active {
+    transform: translateY(1px);
 }
 
-@keyframes fillbg {
-    100% {
-        background-position: left;
+.timeline-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+}
+
+.timeline-message {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 11;
+    font-weight: 500;
+    font-size: 1.25rem;
+    letter-spacing: 0.01em;
+    color: var(--accent-2);
+    text-shadow: 0 0 16px rgba(139, 92, 246, 0.28);
+    opacity: 0;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+    user-select: none;
+}
+
+.timeline-message.visible {
+    opacity: 1;
+}
+
+.timeline-message-top {
+    top: 18%;
+}
+
+.timeline-message-bottom {
+    bottom: 18%;
+}
+
+.timeline-scroll {
+    position: relative;
+    height: 100%;
+    overflow: hidden; /* disable manual scrolling; we animate via transforms */
+}
+
+.timeline-scroll::before,
+.timeline-scroll::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 6;
+}
+
+.timeline-scroll::before {
+    top: 0;
+    height: 2.5em;
+    -webkit-mask-image: linear-gradient(to bottom,
+        rgba(0,0,0,0.95) 0%,
+        rgba(0,0,0,0.75) 45%,
+        rgba(0,0,0,0.35) 80%,
+        rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to bottom,
+        rgba(0,0,0,0.95) 0%,
+        rgba(0,0,0,0.75) 45%,
+        rgba(0,0,0,0.35) 80%,
+        rgba(0,0,0,0) 100%);
+}
+
+.timeline-scroll::after {
+    bottom: 0;
+    height: 2.5em;
+    -webkit-mask-image: linear-gradient(to top,
+        rgba(0,0,0,0.95) 0%,
+        rgba(0,0,0,0.75) 45%,
+        rgba(0,0,0,0.35) 80%,
+        rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to top,
+        rgba(0,0,0,0.95) 0%,
+        rgba(0,0,0,0.75) 45%,
+        rgba(0,0,0,0.35) 80%,
+        rgba(0,0,0,0) 100%);
+}
+
+.timeline-indicator-container {
+    position: absolute;
+    top: 0; /* set by JS */
+    /* Offset further left so it doesn’t cover the left time labels */
+    left: calc(50% - 5px - 3rem);
+    transform: translateX(-100%);
+    z-index: 12;
+    padding: 1em;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.timeline-indicator {
+    font-weight: 500;
+    font-size: 2.1rem;
+    letter-spacing: 0.01em;
+    color: var(--accent-2);
+    text-shadow: 0 0 18px rgba(139, 92, 246, 0.35);
+    background: transparent; /* explicitly no background on the counter text */
+    padding: 0;
+    white-space: nowrap;
+    overflow: visible;
+}
+
+/* countdown removed — pre-start is visual only */
+
+@media (max-width: 420px) {
+    .timeline-indicator-container {
+        transform: none;
+        left: 1rem;
+    }
+}
+
+.timeline-content {
+    padding: 50vh 1rem;
+    position: relative;
+    transform: translateY(0);
+    will-change: transform;
+    transition: transform 0s linear;
+}
+
+.timeline-item {
+    margin-bottom: 2rem;
+    position: relative;
+    padding-left: 1rem; /* fallback until JS positions items */
+    opacity: 0.55;
+    transition: opacity var(--fade-time) ease, transform 240ms ease;
+    z-index: 2;
+}
+
+.timeline-item.active {
+    opacity: 1;
+    background: transparent;
+}
+
+.timeline-item::before,
+.timeline-item::after {
+    display: none;
+}
+
+.timeline-line {
+    position: absolute;
+    width: 10px;
+    background: var(--timeline-track);
+    z-index: 0;
+    overflow: hidden;
+    box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Main line fill is intentionally muted vs pours */
+.timeline-line-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(180deg, rgba(139, 92, 246, 0.34), rgba(167, 139, 250, 0.20));
+    z-index: 1;
+    transition: height var(--fade-time) linear;
+}
+
+.timeline-prestart {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 92, 246, 0.18) 0 2px, transparent 2px 7px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.timeline-line-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    background-image: repeating-linear-gradient(45deg, rgba(139, 92, 246, 0.22) 0 2px, transparent 2px 7px);
+    z-index: 2;
+    pointer-events: none;
+    transition: height var(--fade-time) linear;
+}
+
+.pour-tick {
+    position: absolute;
+    width: 10px;
+    background: var(--pour-track);
+    overflow: hidden;
+    z-index: 1;
+}
+
+.pour-tick .pour-tick-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(180deg, var(--pour-fill-1), var(--pour-fill-2));
+    box-shadow: 0 0 22px rgba(139, 92, 246, 0.45);
+    transition: height var(--fade-time) linear;
+}
+
+.timeline-time {
+    font-size: 1.18rem;
+    color: var(--text);
+    margin-bottom: 0;
+}
+
+.timeline-instruction {
+    font-size: 1.28rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.timeline-details {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    margin-top: 0.25rem;
+}
+
+/* Scale weights shown to the left of the timeline */
+.scale-label {
+    position: absolute;
+    z-index: 3;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 1.05rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    text-align: inherit;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.scale-label-end {
+    color: var(--text);
+}
+
+.scale-label-start {
+    color: var(--accent-2);
+}
+
+/* Right-side time labels (aligned with left weights) */
+.time-label {
+    position: absolute;
+    z-index: 3;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 1.05rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    text-align: inherit;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.label-left {
+    transform: translate(-100%, -50%);
+    text-align: right;
+}
+
+.label-right {
+    transform: translateY(-50%);
+    text-align: left;
+}
+
+.time-label-start {
+    color: var(--accent-2);
+}
+
+.time-label-end {
+    color: var(--text);
+}
+
+@media (max-height: 500px) {
+    .controls {
+        padding: 0.75rem;
+    }
+
+    .timeline-item {
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (min-width: 700px) {
+    .container {
+        max-width: 420px;
+        margin: 0 auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+        border-left: 1px solid var(--border-2);
+        border-right: 1px solid var(--border-2);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
     }
 }
