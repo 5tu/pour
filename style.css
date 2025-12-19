@@ -23,6 +23,26 @@
     --pour-track: rgba(255, 255, 255, 0.08);
     --pour-fill-1: #a78bfa;
     --pour-fill-2: #ddd6fe;
+    --pour-fill-final-1: #7ee787; /* soft green */
+    --pour-fill-final-2: #4ade80;
+}
+
+@keyframes pulse-glow {
+    0% {
+        opacity: 0.35;
+        transform: scale(1);
+        filter: blur(6px);
+    }
+    50% {
+        opacity: 0.85;
+        transform: scale(1.2);
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 0.35;
+        transform: scale(1);
+        filter: blur(6px);
+    }
 }
 
 * {
@@ -42,6 +62,7 @@ body {
         linear-gradient(180deg, var(--bg-1), var(--bg-2));
     overflow: hidden;
     height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height on mobile to account for browser UI */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -50,6 +71,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height on mobile to account for browser UI */
 }
 
 .controls {
@@ -192,7 +214,7 @@ button:focus-visible {
 
 .timeline-scroll::before {
     top: 0;
-    height: 2.5em;
+    height: 2.2em;
     -webkit-mask-image: linear-gradient(to bottom,
         rgba(0,0,0,0.95) 0%,
         rgba(0,0,0,0.75) 45%,
@@ -207,7 +229,7 @@ button:focus-visible {
 
 .timeline-scroll::after {
     bottom: 0;
-    height: 2.5em;
+    height: 2.2em;
     -webkit-mask-image: linear-gradient(to top,
         rgba(0,0,0,0.95) 0%,
         rgba(0,0,0,0.75) 45%,
@@ -333,14 +355,61 @@ button:focus-visible {
 }
 
 .pour-tick .pour-tick-fill {
-    position: absolute;
+    position: relative;
     left: 0;
     top: 0;
     width: 100%;
     height: 0%;
     background: linear-gradient(180deg, var(--pour-fill-1), var(--pour-fill-2));
+    transition: height var(--fade-time) linear, opacity 0ms linear;
+    opacity: 0;
+}
+
+.pour-tick .pour-tick-fill.filled {
+    opacity: 1;
+}
+
+.pour-tick .pour-tick-fill.filled {
     box-shadow: 0 0 22px rgba(139, 92, 246, 0.45);
-    transition: height var(--fade-time) linear;
+}
+
+.pour-tick-final .pour-tick-fill {
+    background: linear-gradient(180deg, var(--pour-fill-final-1), var(--pour-fill-final-2));
+}
+
+.pour-tick-final .pour-tick-fill.filled {
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.28);
+}
+
+.pour-tick-final .pour-tick-fill.filled::after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    background: radial-gradient(ellipse at center, rgba(126, 231, 135, 0.6) 0%, transparent 70%);
+    border-radius: 2px;
+    z-index: 10;
+    pointer-events: none;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Floating glow element that sits above the timeline so it's never clipped */
+.final-tick-glow {
+    position: absolute;
+    z-index: 120;
+    pointer-events: none;
+    border-radius: 50%;
+    transform-origin: center;
+    opacity: 0;
+    transition: opacity 120ms ease;
+    background: radial-gradient(ellipse at center, rgba(126,231,135,0.9) 0%, rgba(126,231,135,0.45) 30%, rgba(126,231,135,0.12) 50%, transparent 70%);
+    filter: blur(6px);
+}
+.final-tick-glow.visible {
+    opacity: 1;
+    animation: pulse-glow 1000ms ease-in-out infinite;
 }
 
 .timeline-time {
