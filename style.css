@@ -274,6 +274,67 @@ button:focus-visible {
     }
 }
 
+/* Wake lock status icon */
+.wake-icon {
+    position: fixed; /* fixed to the viewport */
+    /* Respect device safe areas (older iOS uses constant(), modern uses env()) */
+    left: calc(8px + constant(safe-area-inset-left));
+    left: calc(8px + env(safe-area-inset-left, 0px));
+    bottom: calc(12px + constant(safe-area-inset-bottom));
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    width: 24px; /* fixed 24×24 icon */
+    height: 24px; /* fixed 24×24 icon */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-2);
+    border-radius: 0.55rem;
+    padding: 0.08rem;
+    z-index: 1000; /* keep above most content */
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+    box-shadow: none;
+    background: transparent; /* no background */
+} 
+
+
+
+/* Use phone.png as a mask so we can color it via `color` */
+.wake-icon {
+    color: var(--accent-2);
+    background-color: currentColor; /* will be colored via .active / default color */
+    -webkit-mask-image: url('/phone.png');
+    -webkit-mask-size: 24px 24px; /* fixed mask size to match icon */
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-image: url('/phone.png');
+    mask-size: 24px 24px; /* fixed mask size to match icon */
+    mask-repeat: no-repeat;
+    mask-position: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px 24px; /* fixed fallback bitmap size */
+    /* fallback for browsers without mask support */
+    background-image: url('/phone.png');
+}
+
+/* Active: full green color */
+.wake-icon.active {
+    color: var(--pour-fill-final-1);
+    background-color: var(--pour-fill-final-1); /* ensure exact green for mask and fallback */
+    opacity: 1;
+    filter: none;
+    -webkit-filter: none;
+}
+
+/* Inactive: more dim + slight blur */
+.wake-icon.inactive {
+    color: var(--accent-2);
+    opacity: 0.2; /* more dim */
+    filter: blur(2px) saturate(0.78) brightness(0.86);
+    -webkit-filter: blur(2px) saturate(0.78) brightness(0.86);
+}
+
 .timeline-content {
     padding: 50vh 1rem;
     position: relative;

@@ -25,34 +25,79 @@ let finalVisualCompleted = false;
 // Wake Lock state for keeping screen awake on supported devices (Android)
 let wakeLock = null;
 
+// logWakeEvent is intentionally a no-op in production — temporary test logging removed
+function logWakeEvent() {
+    /* intentionally empty */
+}
+
+
 async function requestWakeLock() {
+    const wakeIconEl = document.getElementById('wakeIcon');
     if (!('wakeLock' in navigator)) {
         console.warn('Wake Lock API not supported in this browser');
+        if (wakeIconEl) {
+            wakeIconEl.classList.remove('active');
+            wakeIconEl.classList.add('inactive');
+            wakeIconEl.setAttribute('title', 'Screen wake not supported');
+        }
         return;
     }
     try {
         wakeLock = await navigator.wakeLock.request('screen');
         // Re-request on release if appropriate
         wakeLock.addEventListener('release', () => {
-            console.log('Wake lock released');
             wakeLock = null;
+            if (wakeIconEl) {
+                wakeIconEl.classList.remove('active');
+                wakeIconEl.classList.add('inactive');
+                wakeIconEl.setAttribute('title', 'Screen wake released');
+            }
         });
-        console.log('Wake lock active');
+        if (wakeIconEl) {
+            wakeIconEl.classList.remove('inactive');
+            wakeIconEl.classList.add('active');
+            wakeIconEl.setAttribute('title', 'Screen kept awake');
+        }
     } catch (err) {
         console.error('Wake Lock request failed:', err && err.name, err && err.message);
+        if (wakeIconEl) {
+            wakeIconEl.classList.remove('active');
+            wakeIconEl.classList.add('inactive');
+            wakeIconEl.setAttribute('title', 'Failed to keep screen awake');
+        }
     }
 }
 
 async function releaseWakeLock() {
+    const wakeIconEl = document.getElementById('wakeIcon');
     try {
         if (wakeLock) {
             await wakeLock.release();
             wakeLock = null;
+            if (wakeIconEl) {
+                wakeIconEl.classList.remove('active');
+                wakeIconEl.classList.add('inactive');
+                wakeIconEl.setAttribute('title', 'Screen wake released');
+            }
         }
     } catch (err) {
         console.error('Error releasing wake lock:', err && err.name, err && err.message);
     }
 }
+
+// Initialize icon state after DOM is ready
+window.addEventListener('DOMContentLoaded', () => {
+    const wakeIconEl = document.getElementById('wakeIcon');
+    if (!wakeIconEl) return;
+    if (!('wakeLock' in navigator)) {
+        wakeIconEl.classList.add('inactive');
+        wakeIconEl.setAttribute('title', 'Screen wake not supported');
+    } else {
+        // default to inactive until we acquire it
+        wakeIconEl.classList.add('inactive');
+        wakeIconEl.setAttribute('title', 'Screen wake idle');
+    }
+});
 
 // Re-acquire wake lock when returning to the page (some browsers require re-request)
 document.addEventListener('visibilitychange', async () => {
@@ -755,7 +800,8 @@ function startTimer() {
     if (elapsedTime === 0) elapsedTime = -PRE_START;
 
     // Request wake lock on supported devices so the screen stays awake
-    // while a recipe is running (useful for Android).</n+    requestWakeLock();
+    // while a recipe is running (useful for Android).
+    requestWakeLock();
     
     let lastTime = performance.now();
     
