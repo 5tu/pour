@@ -303,11 +303,11 @@ button:focus-visible {
 .wake-icon {
     color: var(--accent-2);
     background-color: currentColor; /* will be colored via .active / default color */
-    -webkit-mask-image: url('/phone.png');
+    -webkit-mask-image: url('phone.png');
     -webkit-mask-size: 24px 24px; /* fixed mask size to match icon */
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
-    mask-image: url('/phone.png');
+    mask-image: url('phone.png');
     mask-size: 24px 24px; /* fixed mask size to match icon */
     mask-repeat: no-repeat;
     mask-position: center;
@@ -315,7 +315,7 @@ button:focus-visible {
     background-position: center;
     background-size: 24px 24px; /* fixed fallback bitmap size */
     /* fallback for browsers without mask support */
-    background-image: url('/phone.png');
+    background-image: url('phone.png');
 }
 
 /* Active: full green color */
