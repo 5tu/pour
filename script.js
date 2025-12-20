@@ -66,8 +66,8 @@ const PRE_START = 5;
 const FINAL_TICK_DURATION = 5;
 // Rapid final fill duration (ms) when the final tick begins
 const FINAL_QUICK_FILL_MS = 300;
-// Visual scale: increase spacing by this factor (2 = twice as much vertical spacing -> timeline moves visually twice as fast)
-const VISUAL_SCALE = 8;
+// Fixed visual cadence: pixels per second. All recipes will scroll at this same speed.
+const PIXELS_PER_SECOND = 20;
 let timelineFirstTime = 0;
 let timelineLastTime = 0;
 
@@ -256,9 +256,8 @@ function computeStepScrollPositions() {
     timelineTotalSpan = Math.max((timelineLastTime - timelineFirstTime), 1);
 
     lineTop = Math.round(paddingTop);
-    // Use viewport-stable height for layout (contentRect height can be misleading with absolute children).
-    const baseLineHeight = Math.max(40, Math.round(containerHeight));
-    lineHeight = Math.round(baseLineHeight * VISUAL_SCALE); // apply visual spacing scale
+    // Use a fixed pixels-per-second ratio so all recipes scroll at the same speed.
+    lineHeight = Math.round(timelineTotalSpan * PIXELS_PER_SECOND);
 
     // compute exact horizontal center inside content so the visual line is exactly the viewport center
     const viewportCenterX = wrapperRect.left + wrapperRect.width / 2;
@@ -298,8 +297,8 @@ function computeStepScrollPositions() {
     }
 
     // ensure content is tall enough to contain absolute items (absolute children don't increase scrollHeight)
-    const desiredMinHeight = Math.round(lineTop + lineHeight + paddingBottom + 40);
-    timelineContent.style.minHeight = `${Math.max(timelineContent.offsetHeight || 0, desiredMinHeight)}px`;
+    const desiredHeight = Math.round(lineTop + lineHeight + paddingBottom + 40);
+    timelineContent.style.height = `${desiredHeight}px`;
 
     // position items absolutely:
     // - instruction card centered on the middle of the pour tick (start + duration/2)
@@ -694,6 +693,9 @@ function updateTimelinePosition() {
     // Update timer and messages using the logical fill time so countdown/countup
     // and active highlighting reflect the true recipe end.
     updateTimer(fillTimeLogical);
+    if (timelineLineFill) {
+        timelineLineFill.classList.toggle('is-countdown', fillTimeLogical < 0);
+    }
     if (topMessage) topMessage.classList.toggle('visible', isRunning && fillTimeLogical < 0);
     if (bottomMessage) bottomMessage.classList.toggle('visible', !isRunning && isCompleted);
 
