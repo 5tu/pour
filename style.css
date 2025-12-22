@@ -1,5 +1,6 @@
 :root {
     --fade-time: 250ms; /* global fade time */
+    --controls-overlay: clamp(120px, 22vh, 168px); /* used to let timeline slide under header */
 
     /* Dark, purple-emphasis theme */
     --bg-1: #050615;
@@ -75,13 +76,24 @@ body {
 }
 
 .controls {
+    position: sticky;
+    top: 0;
+    z-index: 30;
     padding: 1rem;
-    background: linear-gradient(180deg, var(--surface), var(--surface-2));
-    border-bottom: 1px solid var(--border);
+    background: rgba(5, 6, 12, 0.28);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    backdrop-filter: blur(8px) saturate(120%);
+    backdrop-filter: blur(9px) saturate(120%);
+    -webkit-backdrop-filter: blur(9px) saturate(120%);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+    margin-bottom: calc(-1 * var(--controls-overlay)); /* lift timeline under the header without altering its geometry */
+}
+
+.timeline-wrapper {
+    margin-top: 0;
+    padding-top: 0;
 }
 
 #recipeSelect {
@@ -110,22 +122,27 @@ body {
 button {
     flex: 1;
     padding: 0.85rem;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     font-size: 1.12rem;
     font-family: inherit;
     cursor: pointer;
-    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
     color: var(--text);
     transition:
         transform 160ms ease,
         background-color 160ms ease,
         border-color 160ms ease,
-        opacity 160ms ease;
+        opacity 160ms ease,
+        box-shadow 160ms ease;
+    backdrop-filter: blur(6px) saturate(110%);
+    -webkit-backdrop-filter: blur(6px) saturate(110%);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
 }
 
 button:not(:disabled):hover {
-    border-color: rgba(255, 255, 255, 0.14);
-    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+    border-color: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.045));
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3);
 }
 
 button:disabled {
@@ -145,14 +162,14 @@ button:focus-visible {
 
 /* Make Start feel “primary” without changing markup */
 #startBtn:not(:disabled) {
-    background: linear-gradient(90deg, rgba(139, 92, 246, 0.95), rgba(167, 139, 250, 0.95));
-    border-color: rgba(255, 255, 255, 0.10);
+    background: linear-gradient(120deg, rgba(139, 92, 246, 0.85), rgba(167, 139, 250, 0.68));
+    border-color: rgba(255, 255, 255, 0.2);
     color: #0a071a;
-    box-shadow: 0 8px 28px rgba(139, 92, 246, 0.25);
+    box-shadow: 0 14px 34px rgba(139, 92, 246, 0.32);
 }
 
 #startBtn:not(:disabled):hover {
-    box-shadow: 0 10px 34px rgba(139, 92, 246, 0.34);
+    box-shadow: 0 16px 42px rgba(139, 92, 246, 0.4);
 }
 
 #startBtn:not(:disabled):active {
@@ -187,7 +204,7 @@ button:focus-visible {
 }
 
 .timeline-message-top {
-    top: 18%;
+    top: clamp(120px, calc(var(--controls-overlay) + env(safe-area-inset-top, 0px) + 12vh), 40%);
 }
 
 .timeline-message-bottom {
@@ -199,45 +216,14 @@ button:focus-visible {
     height: 100%;
     overflow: hidden; /* disable manual scrolling; we animate via transforms */
 
-    /* Mask to fade content as it moves into the top half (above the indicator) */
-    -webkit-mask-image: linear-gradient(to bottom,
-        transparent 0%,
-        black 45%);
-    mask-image: linear-gradient(to bottom,
-        transparent 0%,
-        black 45%);
+    /* Allow content to remain visible beneath the glassy controls without a fade mask */
+    -webkit-mask-image: none;
+    mask-image: none;
 }
 
 /* 2. The progressive blur and opacity fade overlay (top layer) */
 .timeline-wrapper::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 10;
-
-    /* The Blur Effect (applied to everything behind it) */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    /* --- The Combined Gradient Mask --- */
-    /* This creates the *progressive edge* for the blur, ending before the center indicator */
-    -webkit-mask-image: linear-gradient(
-        to bottom,
-        black 0%,      /* Top is fully opaque (full blur) */
-        black 10%,     /* Start the soft edge transition */
-        transparent 45% /* Clear by the time it reaches the center */
-    );
-    mask-image: linear-gradient(
-        to bottom,
-        black 0%,
-        black 10%,
-        transparent 45%
-    );
-
-    /* --- The Opacity Fade (applied to the overlay itself) --- */
-    opacity: 0.9;
-    background: rgba(255, 255, 255, 0.03); /* Slight white tint for depth */
+    content: none; /* remove the progressive blur/fade so the timeline can scroll under the glassy controls */
 }
 
 .timeline-indicator-container {
